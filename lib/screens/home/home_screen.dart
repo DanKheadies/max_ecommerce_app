@@ -24,6 +24,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(
         title: 'The Dankery',
+        hideBack: true,
       ),
       bottomNavigationBar: const CustomNavBar(screen: '/'),
       body: SingleChildScrollView(

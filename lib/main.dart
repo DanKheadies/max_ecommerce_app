@@ -27,17 +27,25 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => CartBloc()..add(StartCart()),
+          create: (_) => CartBloc()..add(LoadCart()),
         ),
         BlocProvider(
           create: (_) => CategoryBloc(
             categoryRepository: CategoryRepository(),
           )..add(LoadCategories()),
         ),
+        // Must come before CheckoutBloc
+        BlocProvider(
+          create: (_) => PaymentBloc()
+            ..add(
+              LoadPaymentMethod(),
+            ),
+        ),
         BlocProvider(
           create: (context) => CheckoutBloc(
             cartBloc: context.read<CartBloc>(),
             checkoutRepository: CheckoutRepository(),
+            paymentBloc: context.read<PaymentBloc>(),
           ),
         ),
         BlocProvider(
@@ -46,15 +54,15 @@ class MyApp extends StatelessWidget {
           )..add(LoadProducts()),
         ),
         BlocProvider(
-          create: (_) => WishlistBloc()..add(StartWishlist()),
+          create: (_) => WishlistBloc()..add(LoadWishlist()),
         ),
       ],
       child: MaterialApp(
         title: 'The Dankery',
         theme: theme(),
         onGenerateRoute: AppRouter.onGenerateRoute,
-        // initialRoute: SplashScreen.routeName,
-        initialRoute: HomeScreen.routeName,
+        initialRoute: SplashScreen.routeName,
+        // initialRoute: HomeScreen.routeName,
       ),
     );
   }

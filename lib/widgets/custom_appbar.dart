@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  final String title;
-
   const CustomAppBar({
     Key? key,
     required this.title,
+    this.hideBack,
+    this.hideWishlist,
   }) : super(key: key);
+
+  final String title;
+  final bool? hideBack;
+  final bool? hideWishlist;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +33,27 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       iconTheme: const IconThemeData(
         color: Colors.black,
       ),
+      automaticallyImplyLeading: hideBack != null
+          ? hideBack!
+              ? false
+              : true
+          : true,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.favorite),
-          onPressed: () {
-            Navigator.pushNamed(context, '/wishlist');
-          },
-        ),
+        hideWishlist != null
+            ? hideWishlist!
+                ? const SizedBox()
+                : IconButton(
+                    icon: const Icon(Icons.favorite),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/wishlist');
+                    },
+                  )
+            : IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/wishlist');
+                },
+              ),
       ],
     );
   }

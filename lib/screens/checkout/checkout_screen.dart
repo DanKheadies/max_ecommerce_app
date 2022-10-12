@@ -19,15 +19,11 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final TextEditingController emailController = TextEditingController();
-    // final TextEditingController nameController = TextEditingController();
-    // final TextEditingController addressController = TextEditingController();
-    // final TextEditingController cityController = TextEditingController();
-    // final TextEditingController countryController = TextEditingController();
-    // final TextEditingController zipCodeController = TextEditingController();
-
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Checkout'),
+      appBar: const CustomAppBar(
+        title: 'Checkout',
+        hideWishlist: true,
+      ),
       bottomNavigationBar: const CustomNavBar(screen: '/checkout'),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -177,7 +173,6 @@ class CheckoutScreen extends StatelessWidget {
 
   Padding _buildTextFormField(
     Function(String)? onChanged,
-    // TextEditingController controller,
     BuildContext context,
     String labelText,
   ) {

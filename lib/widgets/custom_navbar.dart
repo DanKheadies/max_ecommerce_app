@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:max_ecommerce_app/blocs/blocs.dart';
 import 'package:max_ecommerce_app/models/models.dart';
+import 'package:max_ecommerce_app/widgets/widgets.dart';
 
 class CustomNavBar extends StatelessWidget {
   final String screen;
@@ -39,6 +42,8 @@ class CustomNavBar extends StatelessWidget {
         return _buildNavBar(context);
       case '/checkout':
         return _buildOrderNowNavBar(context);
+      case '/order-confirmation':
+        return _buildNavBar(context);
       case '/product':
         return _buildAddToCartNavBar(context, product);
       case '/wishlist':
@@ -166,23 +171,74 @@ class CustomNavBar extends StatelessWidget {
             );
           }
           if (state is CheckoutLoaded) {
-            return ElevatedButton(
-              onPressed: () {
-                context.read<CheckoutBloc>().add(
-                      ConfirmCheckout(
-                        checkout: state.checkout,
+            if (Platform.isAndroid) {
+              switch (state.paymentMethod) {
+                case PaymentMethod.googlePay:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+                case PaymentMethod.creditCard:
+                  return SizedBox(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/order-confirmation');
+                      },
+                      child: Text(
+                        'Pay with Credit Card',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.white,
+                            ),
                       ),
-                    );
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                shape: const RoundedRectangleBorder(),
-              ),
-              child: Text(
-                'ORDER NOW',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            );
+                    ),
+                  );
+                default:
+                  return GooglePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+              }
+            }
+            if (Platform.isIOS) {
+              switch (state.paymentMethod) {
+                case PaymentMethod.applePay:
+                  return ApplePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+                case PaymentMethod.creditCard:
+                  return SizedBox(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/order-confirmation');
+                      },
+                      child: Text(
+                        'Pay with Credit Card',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  );
+                default:
+                  return ApplePay(
+                    products: state.products!,
+                    total: state.total!,
+                  );
+              }
+            } else {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/payment-selection');
+                },
+                child: Text(
+                  'CHOOSE PAYMENT',
+                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              );
+            }
           } else {
             return const Center(
               child: Text('Something went wrong.'),

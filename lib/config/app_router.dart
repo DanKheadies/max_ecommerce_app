@@ -18,6 +18,10 @@ class AppRouter {
         return CheckoutScreen.route();
       case HomeScreen.routeName:
         return HomeScreen.route();
+      case OrderConfirmation.routeName:
+        return OrderConfirmation.route();
+      case PaymentSelection.routeName:
+        return PaymentSelection.route();
       case ProductScreen.routeName:
         return ProductScreen.route(product: settings.arguments as Product);
       case SplashScreen.routeName:

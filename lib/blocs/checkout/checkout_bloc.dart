@@ -13,15 +13,19 @@ part 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final CartBloc _cartBloc;
+  final PaymentBloc _paymentBloc;
   final CheckoutRepository _checkoutRepository;
   StreamSubscription? _cartSubscription;
   StreamSubscription? _checkoutSubscription;
+  StreamSubscription? _paymentSubscription;
 
   CheckoutBloc({
     required CartBloc cartBloc,
     required CheckoutRepository checkoutRepository,
+    required PaymentBloc paymentBloc,
   })  : _cartBloc = cartBloc,
         _checkoutRepository = checkoutRepository,
+        _paymentBloc = paymentBloc,
         super(cartBloc.state is CartLoaded
             ? CheckoutLoaded(
                 products: (cartBloc.state as CartLoaded).cart.products,
@@ -38,6 +42,16 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       if (state is CartLoaded) {
         add(
           UpdateCheckout(cart: state.cart),
+        );
+      }
+    });
+
+    _paymentSubscription = _paymentBloc.stream.listen((state) {
+      if (state is PaymentLoaded) {
+        add(
+          UpdateCheckout(
+            paymentMethod: state.paymentMethod,
+          ),
         );
       }
     });
@@ -62,6 +76,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
             city: event.city ?? state.city,
             country: event.country ?? state.country,
             zipCode: event.zipCode ?? state.zipCode,
+            paymentMethod: event.paymentMethod ?? state.paymentMethod,
           ),
         );
       } catch (_) {}
@@ -83,5 +98,12 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         );
       } catch (_) {}
     }
+  }
+
+  @override
+  Future<void> close() {
+    _cartSubscription?.cancel();
+    _paymentSubscription?.cancel();
+    return super.close();
   }
 }

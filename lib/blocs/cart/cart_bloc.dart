@@ -9,13 +9,13 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartLoading()) {
-    on<StartCart>(_onStartCart);
+    on<LoadCart>(_onLoadCart);
     on<AddProductToCart>(_onAddProductToCart);
     on<RemoveProductFromCart>(_onRemoveProductFromCart);
   }
 
-  void _onStartCart(
-    StartCart event,
+  void _onLoadCart(
+    LoadCart event,
     Emitter<CartState> emit,
   ) async {
     emit(CartLoading());
