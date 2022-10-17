@@ -190,7 +190,7 @@ class ProductActions extends StatelessWidget {
             },
           );
 
-          IconButton removeFromWishList = IconButton(
+          IconButton removeFromWishlist = IconButton(
             icon: Icon(
               Icons.delete,
               color: iconColor,
@@ -230,7 +230,7 @@ class ProductActions extends StatelessWidget {
             return Row(
               children: [
                 addProduct,
-                removeFromWishList,
+                removeFromWishlist,
               ],
             );
           } else {
@@ -284,7 +284,7 @@ class ProductInformation extends StatelessWidget {
                   )
                 : const SizedBox(),
             Text(
-              '\$${product.price}',
+              '\$${product.price.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.headline6!.copyWith(
                     color: fontColor,
                   ),
@@ -310,9 +310,10 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: width,
       height: height,
+      margin: const EdgeInsets.only(bottom: 10),
       child: Image.network(
         product.imageUrl,
         fit: BoxFit.cover,
@@ -336,7 +337,7 @@ class ProductBackground extends StatelessWidget {
     return Container(
       width: adjWidth - 10,
       height: 80,
-      margin: const EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(bottom: 15),
       alignment: Alignment.bottomCenter,
       decoration: BoxDecoration(
         color: Colors.black.withAlpha(50),

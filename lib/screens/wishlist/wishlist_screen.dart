@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:max_ecommerce_app/blocs/blocs.dart';
-import 'package:max_ecommerce_app/models/models.dart';
 import 'package:max_ecommerce_app/widgets/widgets.dart';
 
-class WishListScreen extends StatelessWidget {
+class WishlistScreen extends StatelessWidget {
   static const String routeName = '/wishlist';
   static Route route() {
     return MaterialPageRoute(
       settings: const RouteSettings(
         name: routeName,
       ),
-      builder: (_) => const WishListScreen(),
+      builder: (_) => const WishlistScreen(),
     );
   }
 
-  const WishListScreen({Key? key}) : super(key: key);
+  const WishlistScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

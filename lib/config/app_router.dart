@@ -18,16 +18,22 @@ class AppRouter {
         return CheckoutScreen.route();
       case HomeScreen.routeName:
         return HomeScreen.route();
+      case LoginScreen.routeName:
+        return LoginScreen.route();
       case OrderConfirmation.routeName:
         return OrderConfirmation.route();
       case PaymentSelection.routeName:
         return PaymentSelection.route();
       case ProductScreen.routeName:
         return ProductScreen.route(product: settings.arguments as Product);
+      case ProfileScreen.routeName:
+        return ProfileScreen.route();
+      case SignUpScreen.routeName:
+        return SignUpScreen.route();
       case SplashScreen.routeName:
         return SplashScreen.route();
-      case WishListScreen.routeName:
-        return WishListScreen.route();
+      case WishlistScreen.routeName:
+        return WishlistScreen.route();
 
       default:
         return _errorRoute();

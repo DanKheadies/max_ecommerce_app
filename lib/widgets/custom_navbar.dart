@@ -23,229 +23,237 @@ class CustomNavBar extends StatelessWidget {
       color: Colors.black,
       child: SizedBox(
         height: 70,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: _selectNavBar(context, screen)!,
-        ),
+        child: screen == '/product'
+            ? AddToCartNavBar(product: product!)
+            : screen == '/cart'
+                ? const GoToCheckoutNavBar()
+                : screen == '/checkout'
+                    ? const OrderNowNavBar()
+                    : const HomeNavBar(),
       ),
     );
   }
+}
 
-  List<Widget>? _selectNavBar(context, screen) {
-    switch (screen) {
-      case '/':
-        return _buildNavBar(context);
-      case '/cart':
-        return _buildGoToCheckoutNavBar(context);
-      case '/catalog':
-        return _buildNavBar(context);
-      case '/checkout':
-        return _buildOrderNowNavBar(context);
-      case '/order-confirmation':
-        return _buildNavBar(context);
-      case '/product':
-        return _buildAddToCartNavBar(context, product);
-      case '/wishlist':
-        return _buildNavBar(context);
-      default:
-        return _buildNavBar(context);
-    }
-  }
+class AddToCartNavBar extends StatelessWidget {
+  const AddToCartNavBar({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
-  List<Widget> _buildNavBar(context) {
-    return [
-      IconButton(
-        icon: const Icon(
-          Icons.home,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/home');
-        },
-      ),
-      IconButton(
-        icon: const Icon(
-          Icons.shopping_cart,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/cart');
-        },
-      ),
-      IconButton(
-        icon: const Icon(
-          Icons.person,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, '/user');
-        },
-      ),
-    ];
-  }
+  final Product product;
 
-  List<Widget> _buildAddToCartNavBar(context, product) {
-    return [
-      IconButton(
-        icon: const Icon(
-          Icons.share,
-          color: Colors.white,
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(
+            Icons.share,
+            color: Colors.white,
+          ),
+          onPressed: () {},
         ),
-        onPressed: () {},
-      ),
-      BlocBuilder<WishlistBloc, WishlistState>(
-        builder: (context, state) {
-          return IconButton(
-            icon: const Icon(
-              Icons.favorite,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              context.read<WishlistBloc>().add(AddProductToWishlist(product));
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Added to your Wishlist!'),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is CartLoaded) {
-            return ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-              ),
-              onPressed: () {
-                context.read<CartBloc>().add(AddProductToCart(product));
-                Navigator.pushNamed(context, '/cart');
-              },
-              child: Text(
-                'ADD TO CART',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            );
-          } else {
-            return const Center(
-              child: Text('Something went wrong.'),
-            );
-          }
-        },
-      ),
-    ];
-  }
-
-  List<Widget> _buildGoToCheckoutNavBar(context) {
-    return [
-      ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/checkout');
-        },
-        style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          shape: const RoundedRectangleBorder(),
-        ),
-        child: Text(
-          'GO TO CHECKOUT',
-          style: Theme.of(context).textTheme.headline3,
-        ),
-      ),
-    ];
-  }
-
-  List<Widget> _buildOrderNowNavBar(context) {
-    return [
-      BlocBuilder<CheckoutBloc, CheckoutState>(
-        builder: (context, state) {
-          if (state is CheckoutLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is CheckoutLoaded) {
-            if (Platform.isAndroid) {
-              switch (state.paymentMethod) {
-                case PaymentMethod.googlePay:
-                  return GooglePay(
-                    products: state.products!,
-                    total: state.total!,
-                  );
-                case PaymentMethod.creditCard:
-                  return SizedBox(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/order-confirmation');
-                      },
-                      child: Text(
-                        'Pay with Credit Card',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ),
-                  );
-                default:
-                  return GooglePay(
-                    products: state.products!,
-                    total: state.total!,
-                  );
-              }
+        BlocBuilder<WishlistBloc, WishlistState>(
+          builder: (context, state) {
+            if (state is WishlistLoading) {
+              return const CircularProgressIndicator();
             }
-            if (Platform.isIOS) {
-              switch (state.paymentMethod) {
-                case PaymentMethod.applePay:
-                  return ApplePay(
-                    products: state.products!,
-                    total: state.total!,
-                  );
-                case PaymentMethod.creditCard:
-                  return SizedBox(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/order-confirmation');
-                      },
-                      child: Text(
-                        'Pay with Credit Card',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
+            if (state is WishlistLoaded) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  context
+                      .read<WishlistBloc>()
+                      .add(AddProductToWishlist(product));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Added to your Wishlist!'),
                     ),
                   );
-                default:
-                  return ApplePay(
-                    products: state.products!,
-                    total: state.total!,
-                  );
-              }
+                },
+              );
             } else {
+              return const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+              );
+            }
+          },
+        ),
+        BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is CartLoaded) {
               return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/payment-selection');
+                  context.read<CartBloc>().add(AddProductToCart(product));
+                  Navigator.pushNamed(context, '/cart');
                 },
                 child: Text(
-                  'CHOOSE PAYMENT',
-                  style: Theme.of(context).textTheme.headline3!.copyWith(
-                        color: Colors.white,
-                      ),
+                  'ADD TO CART',
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               );
+            } else {
+              return const Center(
+                child: Text('Something went wrong.'),
+              );
             }
-          } else {
-            return const Center(
-              child: Text('Something went wrong.'),
-            );
-          }
-        },
-      ),
-    ];
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class GoToCheckoutNavBar extends StatelessWidget {
+  const GoToCheckoutNavBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/checkout');
+          },
+          style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: const RoundedRectangleBorder(),
+          ),
+          child: Text(
+            'GO TO CHECKOUT',
+            style: Theme.of(context).textTheme.headline3,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HomeNavBar extends StatelessWidget {
+  const HomeNavBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/home');
+          },
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/cart');
+          },
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/profile');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class OrderNowNavBar extends StatelessWidget {
+  const OrderNowNavBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        BlocBuilder<CheckoutBloc, CheckoutState>(
+          builder: (context, state) {
+            if (state is CheckoutLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is CheckoutLoaded) {
+              if (state.paymentMethod == PaymentMethod.creditCard) {
+                return SizedBox(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/order-confirmation');
+                    },
+                    child: Text(
+                      'Pay with Credit Card',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                );
+              }
+              if (Platform.isAndroid &&
+                  state.paymentMethod == PaymentMethod.googlePay) {
+                return GooglePay(
+                  products: state.products!,
+                  total: state.total!,
+                );
+              }
+              if (Platform.isIOS &&
+                  state.paymentMethod == PaymentMethod.applePay) {
+                return ApplePay(
+                  products: state.products!,
+                  total: state.total!,
+                );
+              } else {
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/payment-selection');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                  ),
+                  child: Text(
+                    'CHOOSE PAYMENT',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                );
+              }
+            } else {
+              return const Center(
+                child: Text('Something went wrong.'),
+              );
+            }
+          },
+        ),
+      ],
+    );
   }
 }

@@ -43,77 +43,70 @@ class CheckoutScreen extends StatelessWidget {
                     'CUSTOMER INFORMATION',
                     style: Theme.of(context).textTheme.headline3,
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               email: value,
                             ),
                           );
                     },
-                    // emailController,
-                    context,
-                    'Email',
+                    title: 'Email',
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               fullName: value,
                             ),
                           );
                     },
-                    context,
-                    'Full Name',
+                    title: 'Full Name',
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'DELIVERY INFORMATION',
                     style: Theme.of(context).textTheme.headline3,
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               address: value,
                             ),
                           );
                     },
-                    context,
-                    'Address',
+                    title: 'Address',
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               city: value,
                             ),
                           );
                     },
-                    context,
-                    'City',
+                    title: 'City',
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               country: value,
                             ),
                           );
                     },
-                    context,
-                    'Country',
+                    title: 'Country',
                   ),
-                  _buildTextFormField(
-                    (value) {
+                  CustomTextFormField(
+                    onChanged: (value) {
                       context.read<CheckoutBloc>().add(
                             UpdateCheckout(
                               zipCode: value,
                             ),
                           );
                     },
-                    context,
-                    'Zip Code',
+                    title: 'Zip Code',
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -167,41 +160,6 @@ class CheckoutScreen extends StatelessWidget {
             }
           },
         ),
-      ),
-    );
-  }
-
-  Padding _buildTextFormField(
-    Function(String)? onChanged,
-    BuildContext context,
-    String labelText,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 75,
-            child: Text(
-              labelText,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ),
-          Expanded(
-            child: TextFormField(
-              onChanged: onChanged,
-              decoration: const InputDecoration(
-                isDense: true,
-                contentPadding: EdgeInsets.only(left: 10),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

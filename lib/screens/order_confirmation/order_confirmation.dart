@@ -22,6 +22,7 @@ class OrderConfirmation extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(
         title: 'Order Confirmation',
+        hideBack: true,
         hideWishlist: true,
       ),
       bottomNavigationBar: const CustomNavBar(
@@ -40,7 +41,6 @@ class OrderConfirmation extends StatelessWidget {
                 ),
                 Positioned(
                   left: (MediaQuery.of(context).size.width) / 2.65,
-                  // left: 0,
                   top: 125,
                   child: SvgPicture.asset(
                     'assets/images/dankery-white.svg',
