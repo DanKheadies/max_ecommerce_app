@@ -51,4 +51,23 @@ class LoginCubit extends Cubit<LoginState> {
       );
     } catch (_) {}
   }
+
+  Future<void> logInWithGoogles() async {
+    if (state.status == LoginStatus.submitting) return;
+    emit(
+      state.copyWith(
+        status: LoginStatus.submitting,
+      ),
+    );
+    try {
+      await _authRepository.logInWithGoogles();
+
+      emit(
+        state.copyWith(
+          status: LoginStatus.success,
+        ),
+      );
+      // TODO: update UI by refreshing or navigating and/or snackbar
+    } catch (_) {}
+  }
 }

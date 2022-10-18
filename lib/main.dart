@@ -12,7 +12,6 @@ import 'package:max_ecommerce_app/repositories/repositories.dart';
 import 'package:max_ecommerce_app/screens/screens.dart';
 import 'package:max_ecommerce_app/simple_bloc_observer.dart';
 
-// void main() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -54,16 +53,16 @@ class MyApp extends StatelessWidget {
               ),
             ),
             BlocProvider(
-              create: (_) => CartBloc()..add(LoadCart()),
+              create: (context) => CartBloc()..add(LoadCart()),
             ),
             BlocProvider(
-              create: (_) => CategoryBloc(
+              create: (context) => CategoryBloc(
                 categoryRepository: CategoryRepository(),
               )..add(LoadCategories()),
             ),
             // PaymentBloc must come before CheckoutBloc
             BlocProvider(
-              create: (_) => PaymentBloc()
+              create: (context) => PaymentBloc()
                 ..add(
                   LoadPaymentMethod(),
                 ),
@@ -75,13 +74,19 @@ class MyApp extends StatelessWidget {
                 paymentBloc: context.read<PaymentBloc>(),
               ),
             ),
+            // ProductBloc must come before SearchBloc
             BlocProvider(
-              create: (_) => ProductBloc(
+              create: (context) => ProductBloc(
                 productRepository: ProductRepository(),
               )..add(LoadProducts()),
             ),
             BlocProvider(
-              create: (_) => WishlistBloc(
+              create: (context) => SearchBloc(
+                productBloc: context.read<ProductBloc>(),
+              )..add(LoadSearch()),
+            ),
+            BlocProvider(
+              create: (context) => WishlistBloc(
                 localStorageRepository: LocalStorageRepository(),
               )..add(LoadWishlist()),
             ),

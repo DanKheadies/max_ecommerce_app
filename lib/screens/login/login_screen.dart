@@ -54,6 +54,8 @@ class LoginScreen extends StatelessWidget {
                     ),
               ),
             ),
+            const SizedBox(height: 10),
+            const _GoogleLoginButton(),
           ],
         ),
       ),
@@ -98,6 +100,30 @@ class _PasswordInput extends StatelessWidget {
           obscureText: true,
         );
       },
+    );
+  }
+}
+
+class _GoogleLoginButton extends StatelessWidget {
+  const _GoogleLoginButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<LoginCubit>().logInWithGoogles();
+      },
+      style: ElevatedButton.styleFrom(
+        shape: const RoundedRectangleBorder(),
+        primary: Colors.white,
+        fixedSize: const Size(200, 40),
+      ),
+      child: Text(
+        'Sign In with Google',
+        style: Theme.of(context).textTheme.headline4!.copyWith(
+              color: Colors.black,
+            ),
+      ),
     );
   }
 }

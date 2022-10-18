@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "492279378208-jflrc6cr7sk009i9ot1lvr4dc2civc75.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.max_ecommerce_app",
+            "certificate_hash": "4f265efd9bc25ff265ae4293b8a7722b4b16ebd0"
+          }
+        },
+        {
           "client_id": "492279378208-1r65j5gke81uv8ieise6884qomnvsumq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,46 @@
               "client_type": 3
             },
             {
-              "client_id": "492279378208-9l4ig99k41dldhijvt1nstshnf5qko8d.apps.googleusercontent.com",
+              "client_id": "492279378208-2jgueqvgsmqdpgbbniqqend9kupndhlh.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.maxEcommerceApp"
+                "bundle_id": "com.example.maxEcommerceBackend"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492279378208:android:229a4f830a947592e56745",
+        "android_client_info": {
+          "package_name": "com.example.max_ecommerce_backend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "492279378208-1r65j5gke81uv8ieise6884qomnvsumq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJOzIBA1wzoUjIlIbaxGXAztAFhK2QMnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "492279378208-1r65j5gke81uv8ieise6884qomnvsumq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "492279378208-2jgueqvgsmqdpgbbniqqend9kupndhlh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.maxEcommerceBackend"
               }
             }
           ]

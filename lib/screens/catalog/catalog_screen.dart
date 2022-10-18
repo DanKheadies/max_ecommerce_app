@@ -30,44 +30,57 @@ class CatalogScreen extends StatelessWidget {
         title: category.name,
       ),
       bottomNavigationBar: const CustomNavBar(screen: '/catalog'),
-      body: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          if (state is ProductLoading) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-              ),
-            );
-          }
-          if (state is ProductLoaded) {
-            final List<Product> categoryProducts = state.products
-                .where((product) => product.category == category.name)
-                .toList();
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            SearchBox(
+              category: category,
+            ),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  final List<Product> categoryProducts = state.products
+                      .where((product) => product.category == category.name)
+                      .toList();
 
-            return GridView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 16,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.15,
-              ),
-              itemCount: categoryProducts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Center(
-                  child: ProductCard.catalog(
-                    product: categoryProducts[index],
-                  ),
-                );
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 16,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.15,
+                    ),
+                    itemCount: categoryProducts.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Center(
+                        child: ProductCard.catalog(
+                          product: categoryProducts[index],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: Text('Something went wrong.'),
+                  );
+                }
               },
-            );
-          } else {
-            return const Center(
-              child: Text('Something went wrong.'),
-            );
-          }
-        },
+            ),
+          ],
+        ),
       ),
     );
   }

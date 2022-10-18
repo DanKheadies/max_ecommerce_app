@@ -12,15 +12,22 @@ class UserRepository extends BaseUserRepository {
 
   @override
   Future<void> createUser(User user) async {
-    await _firebaseFirestore
-        .collection('users')
-        .doc(user.id)
-        .set(user.toDocument());
+    bool userExist =
+        (await _firebaseFirestore.collection('users').doc(user.id).get())
+            .exists;
+
+    if (userExist) {
+      return;
+    } else {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(user.id)
+          .set(user.toDocument());
+    }
   }
 
   @override
   Stream<User> getUser(String userId) {
-    print(userId);
     print('Getting user data from Cloud Firestore');
     return _firebaseFirestore
         .collection('users')
