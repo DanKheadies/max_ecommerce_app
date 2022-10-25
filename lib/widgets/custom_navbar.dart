@@ -96,7 +96,7 @@ class AddToCartNavBar extends StatelessWidget {
             if (state is CartLoaded) {
               return ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  backgroundColor: Colors.white,
                 ),
                 onPressed: () {
                   context.read<CartBloc>().add(AddProductToCart(product));
@@ -133,7 +133,7 @@ class GoToCheckoutNavBar extends StatelessWidget {
             Navigator.pushNamed(context, '/checkout');
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.white,
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(),
           ),
           child: Text(
@@ -204,33 +204,41 @@ class OrderNowNavBar extends StatelessWidget {
               );
             }
             if (state is CheckoutLoaded) {
-              if (state.paymentMethod == PaymentMethod.creditCard) {
+              if (state.checkout.paymentMethod == PaymentMethod.creditCard &&
+                  state.checkout.paymentMethodId != null) {
                 return SizedBox(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/order-confirmation');
+                      context.read<PaymentBloc>().add(
+                            CreatePaymentIntent(
+                              paymentMethodId: state.checkout.paymentMethodId!,
+                              amount: state.checkout.total,
+                            ),
+                          );
+                      // Navigator.pushNamed(context, '/order-confirmation');
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
                     child: Text(
                       'Pay with Credit Card',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: Colors.white,
-                          ),
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ),
                 );
               }
               if (Platform.isAndroid &&
-                  state.paymentMethod == PaymentMethod.googlePay) {
+                  state.checkout.paymentMethod == PaymentMethod.googlePay) {
                 return GooglePay(
-                  products: state.products!,
-                  total: state.total!,
+                  products: state.checkout.cart.products,
+                  total: state.checkout.total.toString(),
                 );
               }
               if (Platform.isIOS &&
-                  state.paymentMethod == PaymentMethod.applePay) {
+                  state.checkout.paymentMethod == PaymentMethod.applePay) {
                 return ApplePay(
-                  products: state.products!,
-                  total: state.total!,
+                  products: state.checkout.cart.products,
+                  total: state.checkout.total.toString(),
                 );
               } else {
                 return ElevatedButton(
@@ -238,7 +246,7 @@ class OrderNowNavBar extends StatelessWidget {
                     Navigator.pushNamed(context, '/payment-selection');
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
+                    backgroundColor: Colors.white,
                   ),
                   child: Text(
                     'CHOOSE PAYMENT',

@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
+                          backgroundColor: Colors.black,
                           shape: const RoundedRectangleBorder(),
                           elevation: 0,
                         ),
@@ -81,7 +81,9 @@ class CartScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const OrderSummary(),
+                  OrderSummary(
+                    cart: state.cart,
+                  ),
                 ],
               ),
             );

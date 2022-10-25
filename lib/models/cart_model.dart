@@ -9,11 +9,32 @@ class Cart extends Equatable {
     this.products = const <Product>[],
   });
 
+  Map<String, dynamic> toDocument() {
+    return {
+      'products': products
+          .map(
+            (product) => product.toDocument(),
+          )
+          .toList(),
+    };
+  }
+
+  static Cart fromJson(Map<String, dynamic> json) {
+    Cart cart = Cart(
+      products: (json['products'] as List)
+          .map(
+            (product) => Product.fromJson(product),
+          )
+          .toList(),
+    );
+    return cart;
+  }
+
   @override
   List<Object?> get props => [products];
 
   Map productQuantity(products) {
-    var quantity = Map();
+    var quantity = {};
 
     products.forEach((product) {
       if (!quantity.containsKey(product)) {

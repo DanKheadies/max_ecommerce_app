@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:max_ecommerce_app/.env';
 import 'package:max_ecommerce_app/blocs/blocs.dart';
 import 'package:max_ecommerce_app/config/config.dart';
 import 'package:max_ecommerce_app/cubits/cubits.dart';
@@ -17,9 +19,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   await Hive.initFlutter();
   Hive.registerAdapter(ProductAdapter());
-
   Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
 }
@@ -43,6 +46,9 @@ class MyApp extends StatelessWidget {
               userRepository: context.read<UserRepository>(),
             ),
           ),
+          RepositoryProvider(
+            create: (context) => CheckoutRepository(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -64,14 +70,15 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (context) => PaymentBloc()
                 ..add(
-                  LoadPaymentMethod(),
+                  StartPayment(),
                 ),
             ),
             BlocProvider(
               create: (context) => CheckoutBloc(
+                authBloc: context.read<AuthBloc>(),
                 cartBloc: context.read<CartBloc>(),
-                checkoutRepository: CheckoutRepository(),
                 paymentBloc: context.read<PaymentBloc>(),
+                checkoutRepository: context.read<CheckoutRepository>(),
               ),
             ),
             // ProductBloc must come before SearchBloc

@@ -166,6 +166,7 @@ class ProductActions extends StatelessWidget {
               color: iconColor,
             ),
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Added to your Cart!'),
@@ -181,6 +182,7 @@ class ProductActions extends StatelessWidget {
               color: iconColor,
             ),
             onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Removed from your Cart!'),

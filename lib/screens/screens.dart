@@ -3,7 +3,7 @@ export 'catalog/catalog_screen.dart';
 export 'checkout/checkout_screen.dart';
 export 'home/home_screen.dart';
 export 'login/login_screen.dart';
-export 'order_confirmation/order_confirmation.dart';
+export 'order_confirmation/order_confirmation_screen.dart';
 export 'payment_selection/payment_selection_screen.dart';
 export 'product/product_screen.dart';
 export 'profile/profile_screen.dart';

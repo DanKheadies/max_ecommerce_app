@@ -50,3 +50,6 @@ app.*.map.json
 /android/app/google-services.json
 /android/app/local.properties
 /ios/Runner/GoogleService-Info.plist
+
+#Custom
+.env

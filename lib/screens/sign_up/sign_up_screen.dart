@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:max_ecommerce_app/blocs/blocs.dart';
+// import 'package:max_ecommerce_app/blocs/blocs.dart';
 import 'package:max_ecommerce_app/cubits/cubits.dart';
-import 'package:max_ecommerce_app/repositories/repositories.dart';
+// import 'package:max_ecommerce_app/repositories/repositories.dart';
 import 'package:max_ecommerce_app/widgets/widgets.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -110,7 +110,7 @@ class SignUpScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
-                    primary: Colors.black,
+                    backgroundColor: Colors.black,
                     fixedSize: const Size(200, 40),
                   ),
                   child: Text(

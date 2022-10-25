@@ -46,18 +46,47 @@ class Product extends Equatable {
         description,
       ];
 
-  static Product fromSnapshot(DocumentSnapshot snap) {
+  // static Product fromSnapshot(DocumentSnapshot snap) {
+  //   Product product = Product(
+  //     id: snap.id,
+  //     name: snap['name'],
+  //     category: snap['category'],
+  //     imageUrl: snap['imageUrl'],
+  //     price: snap['price'],
+  //     isPopular: snap['isPopular'],
+  //     isRecommended: snap['isRecommended'],
+  //     description: snap['description'],
+  //   );
+  //   return product;
+  // }
+  static Product fromJson(
+    Map<String, dynamic> json, [
+    String? id,
+  ]) {
     Product product = Product(
-      id: snap.id,
-      name: snap['name'],
-      category: snap['category'],
-      imageUrl: snap['imageUrl'],
-      price: snap['price'],
-      isPopular: snap['isPopular'],
-      isRecommended: snap['isRecommended'],
-      description: snap['description'],
+      id: id ?? json['id'],
+      name: json['name'],
+      category: json['category'],
+      imageUrl: json['imageUrl'],
+      price: json['price'],
+      isPopular: json['isPopular'],
+      isRecommended: json['isRecommended'],
+      description: json['description'],
     );
     return product;
+  }
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'id': id,
+      'name': name,
+      'category': category,
+      'imageUrl': imageUrl,
+      'price': price,
+      'isRecommended': isRecommended,
+      'isPopular': isPopular,
+      'description': description,
+    };
   }
 
   static List<Product> products = const [

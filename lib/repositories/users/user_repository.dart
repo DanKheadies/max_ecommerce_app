@@ -33,7 +33,13 @@ class UserRepository extends BaseUserRepository {
         .collection('users')
         .doc(userId)
         .snapshots()
-        .map((snap) => User.fromSnapshot(snap));
+        // .map((snap) => User.fromSnapshot(snap));
+        .map(
+          (snap) => User.fromJson(
+            snap.data()!,
+            snap.id,
+          ),
+        );
   }
 
   @override

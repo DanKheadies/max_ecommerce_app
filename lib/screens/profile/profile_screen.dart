@@ -49,12 +49,118 @@ class ProfileScreen extends StatelessWidget {
             );
           }
           if (state is ProfileLoaded) {
-            return Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<AuthRepository>().signOut();
-                },
-                child: const Text('Sign Out'),
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'CUSOMTER INFORMATION',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    title: 'Email',
+                    initialValue: state.user.email,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                email: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  CustomTextFormField(
+                    title: 'Full Name',
+                    initialValue: state.user.fullName,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                fullName: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  CustomTextFormField(
+                    title: 'Address',
+                    initialValue: state.user.address,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                address: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  CustomTextFormField(
+                    title: 'City',
+                    initialValue: state.user.city,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                city: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  CustomTextFormField(
+                    title: 'Country',
+                    initialValue: state.user.country,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                country: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  CustomTextFormField(
+                    title: 'ZIP Code',
+                    initialValue: state.user.zipCode,
+                    onChanged: (value) {
+                      context.read<ProfileBloc>().add(
+                            UpdateProfile(
+                              user: state.user.copyWith(
+                                zipCode: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.read<AuthRepository>().signOut();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(),
+                        backgroundColor: Colors.black,
+                        fixedSize: const Size(200, 40),
+                      ),
+                      child: Text(
+                        'Sign Out',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           }
@@ -78,7 +184,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
-                    primary: Colors.black,
+                    backgroundColor: Colors.black,
                     fixedSize: const Size(200, 40),
                   ),
                   child: Text(
@@ -95,7 +201,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(),
-                    primary: Colors.white,
+                    backgroundColor: Colors.white,
                     fixedSize: const Size(200, 40),
                   ),
                   child: Text(

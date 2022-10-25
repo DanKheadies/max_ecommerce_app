@@ -20,7 +20,9 @@ class LoadProfile extends ProfileEvent {
 class UpdateProfile extends ProfileEvent {
   final User user;
 
-  const UpdateProfile(this.user);
+  const UpdateProfile({
+    required this.user,
+  });
 
   @override
   List<Object?> get props => [user];

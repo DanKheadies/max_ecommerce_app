@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
-                primary: Colors.black,
+                backgroundColor: Colors.black,
                 fixedSize: const Size(200, 40),
               ),
               child: Text(
@@ -115,7 +115,7 @@ class _GoogleLoginButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         shape: const RoundedRectangleBorder(),
-        primary: Colors.white,
+        backgroundColor: Colors.white,
         fixedSize: const Size(200, 40),
       ),
       child: Text(

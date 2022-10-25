@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
-    required this.onChanged,
     required this.title,
+    this.initialValue,
+    required this.onChanged,
   }) : super(key: key);
 
-  final Function(String p1)? onChanged;
   final String title;
+  final String? initialValue;
+  final Function(String p1)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
           Expanded(
             child: TextFormField(
+              initialValue: initialValue,
               onChanged: onChanged,
               decoration: const InputDecoration(
                 isDense: true,
